@@ -3,9 +3,6 @@ import json
 def find_friends(id, data):
     """
     Finds direct friends of a user with an id - id
-    :param id:
-    :param data:
-    :return:
     """
     friends = []
     for user in data:

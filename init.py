@@ -28,7 +28,6 @@ def getFriendsOfFriends(id):
     """
     Friends of friends: those who are two steps away from the chosen 
     user but not directly connected to the chosen user (required);
-    :return: 
     """
     friends_of_friends = []
     data = read_json_file()
@@ -43,7 +42,7 @@ def getFriendsOfFriends(id):
     friends_of_friends = sum(friends_of_friends, [])    # flatten list
     friends_of_friends = list(set(friends_of_friends))  # remove duplicates
     friends_of_friends.remove(int(id))     # remove self from fof
-    friends_of_friends = [fof for fof in friends_of_friends if fof not in friends]     # remove friends from fof
+    friends_of_friends = [fof for fof in friends_of_friends if fof not in friends]   # remove friends from fof
 
     ret_val = get_users_by_ids(friends_of_friends, data)
     return jsonify(ret_val)
@@ -56,19 +55,18 @@ def getSuggestions(id):
     data = read_json_file()
     friends = find_friends(id, data)
 
-    # ako ima vise od dva prijatelja
     if len(friends) >= 2:
-        # nadji sve kombinacije prijatelja
+        #find all combinations of friends
         combinations = list(itertools.combinations(friends, 2))
-        # find friends of friends
+        #find friends of friends
         for user in data:
             if str(user['id']) != str(id):
-                # proveri da li u prijateljima ima neku od kombinacija
+                #check combinations in friends
                 for combination in combinations:
                     if set(combination).issubset(user['friends']) and int(id) not in user['friends']:
                         ret_val.append(user)
     else:
-        return "Nema sugestija za korisnika " + str(id)
+        return "Less than 2 friends! No suggestions for user: " + str(id)
     return jsonify(ret_val)
 
 
